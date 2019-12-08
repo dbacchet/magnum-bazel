@@ -35,6 +35,7 @@ jobs:
       run: |
            echo ${{ github.event_name }}
            echo ${{ github.event.type }}
+           echo ${{ github.event }}
            echo ${{ github.ref }}
            echo ${{ secrets.GITHUB_TOKEN }}
            echo "this is a release"
@@ -53,6 +54,7 @@ jobs:
       run: |
            echo ${{ github.event_name }}
            echo ${{ github.event.type }}
+           echo ${{ github.event }}
            echo ${{ github.ref }}
            echo ${{ secrets.GITHUB_TOKEN }}
            echo ${GITHUB_REF##*/}
