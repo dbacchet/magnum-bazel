@@ -33,12 +33,17 @@ jobs:
     - name: Upload
       if: github.event_name == 'tag'
       run: |
-           echo github.event_name
+           echo ${{ github.event_name }}
+           echo "this is a tag"
+    - name: Upload1
+      if: github.event_name == 'tag'
+      run: |
+           echo ${{ github.event_name }}
            echo "this is a tag"
     - name: Upload2
       if: github.event_name != 'tag'
       run: echo |
-                echo github.event_name
+                echo ${{ github.event_name }}
     # - name: Run tests
     #   run: bazel test ...
 
