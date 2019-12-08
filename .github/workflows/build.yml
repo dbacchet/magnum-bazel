@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-16.04]
+        os: [ubuntu-16.04, ubuntu-18.04]
         # compiler: [g++, clang++]
 
     runs-on: ${{ matrix.os }}
@@ -30,8 +30,19 @@ jobs:
       run: |
            ./build_magnum.sh
            bazel build ...
-    # - name: Run tests
-    #   run: bazel test ...
+    - name: Prepare package
+      if: github.event_name == 'release'
+      run: |
+           tar -czvf archive.tgz .
+    - name: Upload package
+      if: github.event_name == 'release'
+      uses: svenstaro/upload-release-action@v1-release
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: archive.tgz
+        asset_name: ${GITHUB_REF##*/}-${{ matrix.os }}-x86_64.tgz
+        tag: ${{ github.ref }}
+        overwrite: true
 
   macos:
     timeout-minutes: 50
@@ -50,5 +61,16 @@ jobs:
       run: |
            ./build_magnum.sh
            bazel build ...
-    # - name: Run tests
-    #   run: bazel test ...
+    - name: Prepare package
+      if: github.event_name == 'release'
+      run: |
+           tar -czvf archive.tgz .
+    - name: Upload package
+      if: github.event_name == 'release'
+      uses: svenstaro/upload-release-action@v1-release
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: archive.tgz
+        asset_name: ${GITHUB_REF##*/}-macos-x86_64.tgz
+        tag: ${{ github.ref }}
+        overwrite: true
