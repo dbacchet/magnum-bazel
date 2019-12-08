@@ -34,13 +34,19 @@ jobs:
       if: github.event_name == 'release'
       run: |
            tar -czvf archive.tgz BUILD.bazel README.md install
+    - name: Extract branch name
+      id: extract_branch
+      if: github.event_name == 'release'
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/tags/})"
     - name: Upload package
       if: github.event_name == 'release'
       uses: svenstaro/upload-release-action@v1-release
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: archive.tgz
-        asset_name: ${GITHUB_REF##*/}-${{ matrix.os }}-x86_64.tgz
+        asset_name: ${{ steps.extract_branch.outputs.branch }}-${{ matrix.os }}-x86_64.tgz
+
         tag: ${{ github.ref }}
         overwrite: true
 
@@ -65,12 +71,17 @@ jobs:
       if: github.event_name == 'release'
       run: |
            tar -czvf archive.tgz BUILD.bazel README.md install
+    - name: Extract branch name
+      id: extract_branch
+      if: github.event_name == 'release'
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/tags/})"
     - name: Upload package
       if: github.event_name == 'release'
       uses: svenstaro/upload-release-action@v1-release
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: archive.tgz
-        asset_name: ${GITHUB_REF##*/}-macos-x86_64.tgz
+        asset_name: ${{ steps.extract_branch.outputs.branch }}-macos-x86_64.tgz
         tag: ${{ github.ref }}
         overwrite: true
