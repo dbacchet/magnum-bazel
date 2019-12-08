@@ -34,6 +34,7 @@ jobs:
       if: github.event_name == 'release'
       run: |
            echo ${{ github.event_name }}
+           echo ${{ github.event.type }}
            echo ${{ github.ref }}
            echo ${{ secrets.GITHUB_TOKEN }}
            echo "this is a release"
@@ -51,6 +52,7 @@ jobs:
       if: github.event_name != 'release'
       run: |
            echo ${{ github.event_name }}
+           echo ${{ github.event.type }}
            echo ${{ github.ref }}
            echo ${{ secrets.GITHUB_TOKEN }}
            echo ${GITHUB_REF##*/}
