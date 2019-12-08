@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-16.04]
+        os: [ubuntu-16.04, ubuntu-18.04]
         # compiler: [g++, clang++]
 
     runs-on: ${{ matrix.os }}
@@ -29,7 +29,10 @@ jobs:
     - name: Build
       run: |
            ./build_magnum.sh
-           bazel build ...
+           # bazel build ...
+    - name: Upload
+      if: github.event_name == 'tag'
+      run: echo "this is a tag"
     # - name: Run tests
     #   run: bazel test ...
 
@@ -49,6 +52,6 @@ jobs:
     - name: Build
       run: |
            ./build_magnum.sh
-           bazel build ...
+           # bazel build ...
     # - name: Run tests
     #   run: bazel test ...
