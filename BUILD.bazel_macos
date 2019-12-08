@@ -1,0 +1,37 @@
+objc_library(
+    name = 'glfw_macos',
+    sdk_frameworks = [
+        "Cocoa",
+        "IOKit",
+        "CoreFoundation",
+        "CoreVideo",
+        "OpenGL",
+    ],
+    visibility = ["//visibility:private"],
+)
+
+cc_library(
+    name = 'magnum',
+    srcs = [# order is relevant for the linux linker
+            "install/lib/libMagnumDebugTools.a",
+            "install/lib/libMagnumSceneGraph.a",
+            "install/lib/libMagnumImGuiIntegration.a",
+            "install/lib/libMagnumShaders.a",
+            "install/lib/libMagnumGL.a",
+            "install/lib/libMagnumMeshTools.a",
+            "install/lib/libMagnumPrimitives.a",
+            "install/lib/libMagnumTrade.a",
+            "install/lib/libimgui.a",
+            "install/lib/libMagnumGlfwApplication.a",
+            "install/lib/libMagnumText.a",
+            "install/lib/libMagnumTextureTools.a",
+            "install/lib/libMagnum.a",
+            "install/lib/libCorradeUtility.a",
+            "install/lib/libglfw3.a",
+            ],
+    hdrs = glob(["install/include/**/*"]),
+    strip_include_prefix = "install/include",
+    deps = ['glfw_macos'],
+    visibility = ["//visibility:public"],
+)
+

@@ -1,25 +1,3 @@
-config_setting (
-  name = "macos",
-  constraint_values = [ "@bazel_tools//platforms:osx" ]
-)
-
-config_setting (
-  name = "linux",
-  constraint_values = [ "@bazel_tools//platforms:linux" ]
-)
-
-objc_library(
-    name = 'glfw_macos',
-    sdk_frameworks = [
-        "Cocoa",
-        "IOKit",
-        "CoreFoundation",
-        "CoreVideo",
-        "OpenGL",
-    ],
-    visibility = ["//visibility:private"],
-)
-
 cc_library(
     name = 'glfw_linux',
     copts = [
@@ -57,10 +35,7 @@ cc_library(
             ],
     hdrs = glob(["install/include/**/*"]),
     strip_include_prefix = "install/include",
-    deps = select({
-        ":linux" : ['glfw_linux'],
-        ":macos" : ['glfw_macos'],
-        }),
+    deps = ['glfw_linux'],
     visibility = ["//visibility:public"],
 )
 

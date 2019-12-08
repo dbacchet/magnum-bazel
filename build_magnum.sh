@@ -6,9 +6,18 @@ BUILD_TYPE=RelWithDebInfo
 
 echo ${MAGNUM_INSTALL_FOLDER}
 set -x
+set -e
 
-rm -rf ${MAGNUM_INSTALL_FOLDER}
+rm -rf ${MAGNUM_INSTALL_FOLDER} BUILD.bazel
 
+if [ "$(uname)" == "Darwin" ]; then
+    cp BUILD.bazel_macos BUILD.bazel
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    cp BUILD.bazel_linux BUILD.bazel
+else
+    echo "Unsupported OS"
+    exit 1
+fi
 MAGNUM_VERSION="v2019.10"
 
 # install Corrade
