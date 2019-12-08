@@ -1,6 +1,6 @@
 name: build
 
-on: [push, pull_request]
+on: [push, pull_request, release]
 
 jobs:
 
@@ -33,7 +33,7 @@ jobs:
     - name: Prepare package
       if: github.event_name == 'release'
       run: |
-           tar -czvf archive.tgz .
+           tar -czvf archive.tgz BUILD.bazel README.md install
     - name: Upload package
       if: github.event_name == 'release'
       uses: svenstaro/upload-release-action@v1-release
@@ -64,7 +64,7 @@ jobs:
     - name: Prepare package
       if: github.event_name == 'release'
       run: |
-           tar -czvf archive.tgz .
+           tar -czvf archive.tgz BUILD.bazel README.md install
     - name: Upload package
       if: github.event_name == 'release'
       uses: svenstaro/upload-release-action@v1-release
