@@ -53,7 +53,6 @@ jobs:
            echo ${{ github.event_name }}
            echo ${{ github.ref }}
            echo ${{ secrets.GITHUB_TOKEN }}
-           echo ${{ GITHUB_REF##*/ }}
            echo ${GITHUB_REF##*/}
     # - name: Run tests
     #   run: bazel test ...
