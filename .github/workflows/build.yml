@@ -43,7 +43,7 @@ jobs:
       uses: svenstaro/upload-release-action@v1-release
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: archive.tgz
+        file: ${GITHUB_REF##*/}.tgz
         asset_name: mything.tgz
         tag: ${{ github.ref }}
         overwrite: true
@@ -53,6 +53,8 @@ jobs:
            echo ${{ github.event_name }}
            echo ${{ github.ref }}
            echo ${{ secrets.GITHUB_TOKEN }}
+           echo ${{ GITHUB_REF##*/ }}
+           echo ${GITHUB_REF##*/}
     # - name: Run tests
     #   run: bazel test ...
 
