@@ -1,6 +1,6 @@
 name: build
 
-on: [push, pull_request]
+on: [push, pull_request, release]
 
 jobs:
 
@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-16.04, ubuntu-18.04]
+        os: [ubuntu-16.04]
         # compiler: [g++, clang++]
 
     runs-on: ${{ matrix.os }}
@@ -30,39 +30,38 @@ jobs:
       run: |
            ./build_magnum.sh
            # bazel build ...
-    - name: Upload
-      if: github.event_name == 'tag'
-      run: |
-           echo ${{ github.event_name }}
-           echo "this is a tag"
     - name: Upload1
-      if: github.event_name == 'tag'
+      if: github.event_name == 'release'
       run: |
            echo ${{ github.event_name }}
-           echo "this is a tag"
+           echo ${{ github.ref }}
+           echo ${{ secrets.GITHUB_TOKEN }}
+           echo "this is a release"
     - name: Upload2
-      if: github.event_name != 'tag'
-      run: echo |
-                echo ${{ github.event_name }}
+      if: github.event_name != 'release'
+      run: |
+           echo ${{ github.event_name }}
+           echo ${{ github.ref }}
+           echo ${{ secrets.GITHUB_TOKEN }}
     # - name: Run tests
     #   run: bazel test ...
 
-  macos:
-    timeout-minutes: 50
-
-    runs-on: macOS-10.14
-
-    steps:
-    - uses: actions/checkout@v1
-    - name: Install build dependencies
-      run: |
-           wget https://github.com/bazelbuild/bazel/releases/download/1.2.1/bazel-1.2.1-installer-darwin-x86_64.sh
-           chmod +x bazel-1.2.1-installer-darwin-x86_64.sh
-           sudo ./bazel-1.2.1-installer-darwin-x86_64.sh
-           rm bazel-1.2.1-installer-darwin-x86_64.sh 
-    - name: Build
-      run: |
-           ./build_magnum.sh
-           # bazel build ...
-    # - name: Run tests
-    #   run: bazel test ...
+  # macos:
+  #   timeout-minutes: 50
+  #
+  #   runs-on: macOS-10.14
+  #
+  #   steps:
+  #   - uses: actions/checkout@v1
+  #   - name: Install build dependencies
+  #     run: |
+  #          wget https://github.com/bazelbuild/bazel/releases/download/1.2.1/bazel-1.2.1-installer-darwin-x86_64.sh
+  #          chmod +x bazel-1.2.1-installer-darwin-x86_64.sh
+  #          sudo ./bazel-1.2.1-installer-darwin-x86_64.sh
+  #          rm bazel-1.2.1-installer-darwin-x86_64.sh 
+  #   - name: Build
+  #     run: |
+  #          ./build_magnum.sh
+  #          # bazel build ...
+  #   # - name: Run tests
+  #   #   run: bazel test ...
