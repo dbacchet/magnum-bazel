@@ -30,13 +30,23 @@ jobs:
       run: |
            ./build_magnum.sh
            # bazel build ...
-    - name: Upload1
+    - name: Prepare package
       if: github.event_name == 'release'
       run: |
            echo ${{ github.event_name }}
            echo ${{ github.ref }}
            echo ${{ secrets.GITHUB_TOKEN }}
            echo "this is a release"
+           tar -czvf archive.tgz BUILD.bazel build_magnum.sh
+    - name: upload package
+      if: github.event_name == 'release'
+      uses: svenstaro/upload-release-action@v1-release
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: archive.tgz
+        asset_name: mything.tgz
+        tag: ${{ github.ref }}
+        overwrite: true
     - name: Upload2
       if: github.event_name != 'release'
       run: |
