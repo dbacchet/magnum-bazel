@@ -1,0 +1,54 @@
+name: build
+
+on: [push, pull_request]
+
+jobs:
+
+  linux:
+    timeout-minutes: 50
+
+    strategy:
+      matrix:
+        os: [ubuntu-16.04]
+        # compiler: [g++, clang++]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install system dependencies
+      run: |
+           sudo apt update
+           sudo apt install -y libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev
+    - name: Install build dependencies
+      run: |
+           wget https://github.com/bazelbuild/bazel/releases/download/1.2.1/bazel-1.2.1-installer-linux-x86_64.sh
+           chmod +x bazel-1.2.1-installer-linux-x86_64.sh
+           sudo ./bazel-1.2.1-installer-linux-x86_64.sh
+           rm bazel-1.2.1-installer-linux-x86_64.sh 
+    - name: Build
+      run: |
+           ./build_magnum.sh
+           bazel build ...
+    - name: Run tests
+      run: bazel test ...
+
+  macos:
+    timeout-minutes: 50
+
+    runs-on: macOS-10.14
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install build dependencies
+      run: |
+           wget https://github.com/bazelbuild/bazel/releases/download/1.2.1/bazel-1.2.1-installer-darwin-x86_64.sh
+           chmod +x bazel-1.2.1-installer-darwin-x86_64.sh
+           sudo ./bazel-1.2.1-installer-darwin-x86_64.sh
+           rm bazel-1.2.1-installer-darwin-x86_64.sh 
+    - name: Build
+      run: |
+           ./build_magnum.sh
+           bazel build ...
+    - name: Run tests
+      run: bazel test ...

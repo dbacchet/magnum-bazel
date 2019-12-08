@@ -1,0 +1,66 @@
+config_setting (
+  name = "macos",
+  constraint_values = [ "@bazel_tools//platforms:osx" ]
+)
+
+config_setting (
+  name = "linux",
+  constraint_values = [ "@bazel_tools//platforms:linux" ]
+)
+
+objc_library(
+    name = 'glfw_macos',
+    sdk_frameworks = [
+        "Cocoa",
+        "IOKit",
+        "CoreFoundation",
+        "CoreVideo",
+        "OpenGL",
+    ],
+    visibility = ["//visibility:private"],
+)
+
+cc_library(
+    name = 'glfw_linux',
+    copts = [
+        "-I/usr/include",
+    ],
+    linkopts = [
+        # Note:  This is a bit of a HACK to build & link against whatever
+        # version of X11 is installed on the system. Ideally, X11 would also
+        # be built with bazel to ensure consistency.
+        "-lGL",
+        "-lX11",
+        "-ldl",
+        "-pthread",
+    ],
+)
+
+cc_library(
+    name = 'magnum',
+    srcs = [# order is relevant for the linux linker
+            "install/lib/libMagnumDebugTools.a",
+            "install/lib/libMagnumSceneGraph.a",
+            "install/lib/libMagnumImGuiIntegration.a",
+            "install/lib/libMagnumShaders.a",
+            "install/lib/libMagnumGL.a",
+            "install/lib/libMagnumMeshTools.a",
+            "install/lib/libMagnumPrimitives.a",
+            "install/lib/libMagnumTrade.a",
+            "install/lib/libimgui.a",
+            "install/lib/libMagnumGlfwApplication.a",
+            "install/lib/libMagnumText.a",
+            "install/lib/libMagnumTextureTools.a",
+            "install/lib/libMagnum.a",
+            "install/lib/libCorradeUtility.a",
+            "install/lib/libglfw3.a",
+            ],
+    hdrs = glob(["install/include/**/*"]),
+    strip_include_prefix = "install/include",
+    deps = select({
+        ":linux" : ['glfw_linux'],
+        ":macos" : ['glfw_macos'],
+        }),
+    visibility = ["//visibility:public"],
+)
+
