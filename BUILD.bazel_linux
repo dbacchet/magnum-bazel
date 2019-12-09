@@ -39,3 +39,9 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+filegroup(
+    name = 'corrade-rc',
+    srcs = ['install/bin/corrade-rc'],
+    visibility = ["//visibility:public"],
+)
+
