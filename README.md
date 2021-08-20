@@ -13,3 +13,20 @@ The final package contains the following libraries:
 * _GLFW 3.3_ ([github link](https://github.com/glfw/glfw))
 * _Imgui 1.74_ ([github link](https://github.com/ocornut/imgui))
 * _ImGuizmo_ ([github link](https://github.com/CedricGuillemet/ImGuizmo))
+
+
+# How to use it
+
+after you build the supporting libraries with the `build_magnum.sh` script, you can run:
+```
+bazel build //...
+```
+and it will build for you the example app that is in this repository.
+To run it you can then use bazel again:
+```
+bazel run //sample:scenegraph_example
+```
+or run the executable directly with:
+```
+./bazel-bin/sample/scenegraph_example
+```

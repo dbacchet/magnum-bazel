@@ -68,10 +68,10 @@ make -j8 && make install
 # imgui dependency
 cd ${BASE_DIR}
 rm -rf imgui
-git clone --branch v1.74 --depth 1 https://github.com/ocornut/imgui.git
+git clone --branch v1.83 --depth 1 https://github.com/ocornut/imgui.git
 # imguizmo
 rm -rf ImGuizmo
-git clone --depth 1 https://github.com/CedricGuillemet/ImGuizmo.git
+git clone --branch 1.83 --depth 1 https://github.com/CedricGuillemet/ImGuizmo.git
 rm -rf build_imgui
 mkdir build_imgui && cd build_imgui
 cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \

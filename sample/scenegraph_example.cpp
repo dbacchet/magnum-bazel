@@ -265,10 +265,10 @@ void ScenegraphExample::drawEvent() {
     // }
 
     /* 3. Show the ImGui test window. Most of the sample code is in
-       ImGui::ShowTestWindow() */
+       ImGui::ShowDemoWindow() */
     if (true) {
         ImGui::SetNextWindowPos(ImVec2(150, 20)); //, ImGuiCond_FirstUseEver);
-        ImGui::ShowTestWindow();
+        ImGui::ShowDemoWindow();
     }
 
     // object manipulator
